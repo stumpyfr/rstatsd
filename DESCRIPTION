@@ -1,0 +1,11 @@
+Package: rstatsd
+Title: Statsd Client For R
+Version: 0.0.1.0
+Authors@R: person("Niels", "Freier", , "freier.niels@bcg.com", role = c("aut", "cre"))
+Description: Lets you send metric to any statsD server
+Depends: R (>= 3.1.2)
+License: MIT
+LazyData: true
+LinkingTo: Rcpp
+Imports: Rcpp
+RoxygenNote: 6.0.1
