@@ -22,6 +22,6 @@ to count each http 200 return code on post event, the last parameters allow you 
 
 ```
 library("rstatsd")
-client <- new(rstatsd::Statsd, "localhost", 8125, "asq.", TRUE)
+client <- new(rstatsd::Statsd, "localhost", 8125, "myproject.")
 client$count("http.post.200", 1, 1)
 ```
