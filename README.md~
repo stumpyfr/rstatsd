@@ -6,7 +6,7 @@ Go Client library for [StatsD](https://github.com/etsy/statsd/). Contains a dire
 
 ## Installation
 
-    devtools::install_github("stumpyfr/rstatsd")
+    devtools::install_github("stumpy/rstatsd")
     
 ## Supported event types
 
