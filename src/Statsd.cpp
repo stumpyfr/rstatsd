@@ -39,7 +39,7 @@ public:
   Statsd(const std::string &host = "127.0.0.1", const int port = 8125,
          const std::string &ns = "");
   void config(const std::string &host, int port, const std::string &ns = "");
-    int send(std::string key, size_t value, const std::string &type,
+  int send(std::string key, size_t value, const std::string &type,
            float sample_rate);
 
   ~Statsd();
@@ -60,7 +60,8 @@ Statsd::Statsd(const std::string &host, const int port, const std::string &ns) {
   config(host, port, ns);
 }
 
-void Statsd::config(const std::string &host, const int port, const std::string &ns) {
+void Statsd::config(const std::string &host, const int port,
+                    const std::string &ns) {
   d->ns = ns;
   d->host = host;
   d->port = port;
@@ -129,7 +130,6 @@ int Statsd::send(std::string key, const size_t value, const std::string &type,
 
   return send_to_daemon(buf);
 }
-
 
 void Statsd::cleanup(std::string &key) {
   size_t pos = key.find_first_of(":|@");
