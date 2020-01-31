@@ -38,3 +38,4 @@ vignettes/*.pdf
 
 *#
 *~
+.Rproj.user

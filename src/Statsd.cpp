@@ -36,22 +36,16 @@ struct _StatsdClientData {
 
 class Statsd {
 public:
-  Statsd(const std::string &host = "127.0.0.1", int port = 8125,
+  Statsd(const std::string &host = "127.0.0.1", const int port = 8125,
          const std::string &ns = "");
   void config(const std::string &host, int port, const std::string &ns = "");
-  int inc(const std::string &key, float sample_rate = 1.0);
-  int dec(const std::string &key, float sample_rate = 1.0);
-  int count(const std::string &key, size_t value, float sample_rate = 1.0);
-  int gauge(const std::string &key, size_t value, float sample_rate = 1.0);
-  int timing(const std::string &key, size_t ms, float sample_rate = 1.0);
+    int send(std::string key, size_t value, const std::string &type,
+           float sample_rate);
+
   ~Statsd();
-  void print();
 
 private:
   int init();
-  int send(const std::string &message);
-  int send(std::string key, size_t value, const std::string &type,
-           float sample_rate);
   void cleanup(std::string &key);
   int send_to_daemon(const std::string &message);
 
@@ -60,13 +54,13 @@ protected:
 };
 
 // constructors
-Statsd::Statsd(const std::string &host, int port, const std::string &ns) {
+Statsd::Statsd(const std::string &host, const int port, const std::string &ns) {
   d = new _StatsdClientData;
   d->sock = -1;
   config(host, port, ns);
 }
 
-void Statsd::config(const std::string &host, int port, const std::string &ns) {
+void Statsd::config(const std::string &host, const int port, const std::string &ns) {
   d->ns = ns;
   d->host = host;
   d->port = port;
@@ -116,28 +110,8 @@ int Statsd::init() {
   return 0;
 }
 
-int Statsd::dec(const std::string &key, float sample_rate) {
-  return count(key, -1, sample_rate);
-}
-
-int Statsd::inc(const std::string &key, float sample_rate) {
-  return count(key, 1, sample_rate);
-}
-
-int Statsd::gauge(const std::string &key, size_t value, float sample_rate) {
-  return send(key, value, "g", sample_rate);
-}
-
-int Statsd::timing(const std::string &key, size_t ms, float sample_rate) {
-  return send(key, ms, "ms", sample_rate);
-}
-
-int Statsd::count(const std::string &key, size_t value, float sample_rate) {
-  return send(key, value, "c", sample_rate);
-}
-
-int Statsd::send(std::string key, size_t value, const std::string &type,
-                 float sample_rate) {
+int Statsd::send(std::string key, const size_t value, const std::string &type,
+                 const float sample_rate) {
   if (!should_send(sample_rate)) {
     return 0;
   }
@@ -153,10 +127,9 @@ int Statsd::send(std::string key, size_t value, const std::string &type,
              value, type.c_str(), sample_rate);
   }
 
-  return send(buf);
+  return send_to_daemon(buf);
 }
 
-int Statsd::send(const std::string &message) { return send_to_daemon(message); }
 
 void Statsd::cleanup(std::string &key) {
   size_t pos = key.find_first_of(":|@");
@@ -186,22 +159,11 @@ int Statsd::send_to_daemon(const std::string &message) {
 
 Statsd::~Statsd() {}
 
-// print function
-void Statsd::print() {
-  Rcpp::Rcout << "x = "
-              << "test" << std::endl;
-}
-
 RCPP_MODULE(statsdmodule) {
   Rcpp::class_<Statsd>("Statsd")
       .constructor<std::string, int, std::string>(
           "initialize a new statsD client")
       .method("config", &Statsd::config,
               "allow to change the configuration during runtime")
-      .method("inc", &Statsd::inc, "inc increments a statsd count type")
-      .method("dec", &Statsd::dec, "dec decrements a statsd count type")
-      .method("count", &Statsd::count, "count submits a stats count type")
-      .method("gauge", &Statsd::gauge,
-              "gauge submits/updates a statsd gauge type")
-      .method("timing", &Statsd::timing, "timing submits a statsd timing type");
+      .method("send", &Statsd::send, "sends formatted statsd message");
 }
