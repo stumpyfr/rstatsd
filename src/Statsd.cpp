@@ -160,7 +160,7 @@ int Statsd::send_to_daemon(const std::string &message) {
 Statsd::~Statsd() {}
 
 RCPP_MODULE(statsdmodule) {
-  Rcpp::class_<Statsd>("Statsd")
+  Rcpp::class_<Statsd>("Statsd_Impl")
       .constructor<std::string, int, std::string>(
           "initialize a new statsD client")
       .method("config", &Statsd::config,

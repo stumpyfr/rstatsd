@@ -1,4 +1,3 @@
 useDynLib(rstatsd)
-exportPattern("^[^\\.]")
-exportPattern("^[[:alpha:]]+") 
+export(Statsd)
 import(methods, Rcpp)
