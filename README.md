@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Go Client library for [StatsD](https://github.com/etsy/statsd/). Contains a direct only, buffered version in todo
+R Client library for [StatsD](https://github.com/etsy/statsd/). Contains a direct only, buffered version in todo
 
 ***Only working on Linux and Mac for now***, next step would be Windows support (feel free to create a PR!)
 
@@ -24,6 +24,6 @@ to count each http 200 return code on post event, the last parameters allow you 
 
 ```
 library("rstatsd")
-client <- new(rstatsd::Statsd, "localhost", 8125, "myproject.")
+client <- Statsd$new("localhost", 8125, "myproject.")
 client$count("http.post.200", 1, 1)
 ```
