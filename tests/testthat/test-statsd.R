@@ -7,7 +7,7 @@ test_that("client is instantiable and performs statsd calls", {
     Sys.sleep(1)
     5
   }), 5)
-  for (i in seq(1, 10)) {
+  for (i in seq(1, 3)) {
     expect_equal(client$gauged.call("gauge_name", {
       print("Printing from gauged expression.")
       Sys.sleep(1)
