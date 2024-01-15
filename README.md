@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Go Client library for [StatsD](https://github.com/etsy/statsd/). Contains a direct only, buffered version in todo
+R Client library for [StatsD](https://github.com/etsy/statsd/). Contains a direct only, buffered version in todo
 
 ***Only working on Linux and Mac for now***, next step would be Windows support (feel free to create a PR!)
 
